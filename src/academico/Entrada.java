@@ -9,7 +9,7 @@ import java.util.Scanner;
  * @author Hilario Seibel Junior e <seu nome aqui>
  */
 public class Entrada {
-    public Scanner input;
+    private Scanner input;
 
     /**
      * Construtor da classe academico.Entrada
