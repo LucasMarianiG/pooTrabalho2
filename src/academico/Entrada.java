@@ -32,7 +32,7 @@ public class Entrada {
      * @param msg: Mensagem que será exibida ao usuário
      * @return Uma String contendo a linha que foi lida
      */
-    private String lerLinha(String msg) {
+    public String lerLinha(String msg) {
         // Imprime uma mensagem ao usuário, lê uma e retorna esta linha
         System.out.print(msg);
         String linha = this.input.nextLine();
@@ -47,7 +47,7 @@ public class Entrada {
      * @param msg: Mensagem que será exibida ao usuário
      * @return O número digitado pelo usuário convertido para int
      */
-    private int lerInteiro(String msg) {
+    public int lerInteiro(String msg) {
         // Imprime uma mensagem ao usuário, lê uma linha contendo um inteiro e retorna este inteiro
         String linha = this.lerLinha(msg);
         return Integer.parseInt(linha);
@@ -58,7 +58,7 @@ public class Entrada {
      * @param msg: Mensagem que será exibida ao usuário
      * @return O número digitado pelo usuário convertido para double
      */
-    private double lerDouble(String msg) {
+    public double lerDouble(String msg) {
         // Imprime uma mensagem ao usuário, lê uma linha contendo um double e retorna este double
         String linha = this.lerLinha(msg);
         return Double.parseDouble(linha);
