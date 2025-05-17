@@ -1,19 +1,15 @@
 package academico;
 
-import java.util.Scanner;
 
 public class Data {
-    private Entrada io;
     private int dia;
     private int mes;
     private int ano;
 
-    public Data() {
-        Entrada io = new Entrada();
-
-        this.dia = this.io.lerInteiro("Dia: ");
-        this.mes = this.io.lerInteiro("Mês: ");
-        this.ano = this.io.lerInteiro("Ano: ");
+    public Data(int dia, int mes, int ano) {
+        this.dia = dia;
+        this.mes = mes;
+        this.ano = ano;
     }
 
     public int getDia() {
