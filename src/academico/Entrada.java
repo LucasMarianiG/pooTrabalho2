@@ -111,4 +111,26 @@ public class Entrada {
         }
     }
 
+    /***************************************************/
+
+    /**
+     * Lê os dados de um novo academico.Aluno e cadastra-o no sistema.
+     * @param s: Um objeto da classe academico.Sistema
+     */
+    public void cadAluno(Sistema s) {
+        s.listarAlunos();
+
+        String nome = this.lerLinha("Digite o nome do aluno: ");
+        String cpf = this.lerLinha("Digite o cpf do aluno: ");
+        String mat = this.lerLinha("Digite a matrícula do aluno: ");
+
+        if (s.encontrarAluno(mat) == null) { // Garantindo que a Matrícula não esteja duplicada.
+            Aluno a = new Aluno(nome, cpf, mat);
+            s.novoAluno(a);
+        }
+        else {
+            System.out.println("Erro: Matrícula duplicado. academico.Aluno não adicionado.");
+        }
+    }
+
 }

@@ -10,7 +10,11 @@ public class Aluno extends Pessoa {
 
     @Override
     public String toString() {
-        return nome + " (Matrícula: " + this.mat + ")";
+        return this.nome + " (Matrícula: " + this.mat + ")";
+    }
+
+    public String getMat() {
+        return this.mat;
     }
 
 }

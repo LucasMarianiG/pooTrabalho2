@@ -16,7 +16,7 @@ public class Main {
                 io.cadProf(s);
             }
             if (op == 2) {
-                //io.cadAluno(s);
+                io.cadAluno(s);
             }
             if (op == 3) {
                 //io.cadTurma(s);
