@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 /**
  * Classe com as rotinas de entrada e saída do projeto
- * @author Hilario Seibel Junior e <seu nome aqui>
+ * @author Hilario Seibel Junior, <Lucas Mariani e Douglas Bolis>
  */
 public class Entrada {
     private Scanner input;
@@ -133,4 +133,27 @@ public class Entrada {
         }
     }
 
+    /***************************************************/
+
+    /**
+     * Lê os dados de uma nova academico.Turma e cadastra-a no sistema.
+     * @param s: Um objeto da classe academico.Sistema
+     */
+    public void cadTurma(Sistema s) {
+        s.listarTurmas();
+
+        String nome = this.lerLinha("Digite o nome da Turma: ");
+        int ano = this.lerInteiro("Digite o ano da Turma: ");
+        int sem = this.lerInteiro("Digite o semestre da Turma: ");
+        String cpfProf = this.lerLinha("Digite o cpf do Professor desta turma: ");
+        Professor p = s.encontrarProfessor(cpfProf);
+
+        if (p != null) {
+             Turma t = new Turma(nome, ano, sem, p);
+            s.novaTurma(t);
+        }
+        else {
+            System.out.println("Erro: Professor não encontrado.");
+        }
+    }
 }

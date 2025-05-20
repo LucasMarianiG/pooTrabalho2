@@ -19,10 +19,10 @@ public class Main {
                 io.cadAluno(s);
             }
             if (op == 3) {
-                //io.cadTurma(s);
+                io.cadTurma(s);
             }
             if (op == 4) {
-                //s.listarTurmas();
+                s.listarTurmas();
             }
 
             op = io.menu();

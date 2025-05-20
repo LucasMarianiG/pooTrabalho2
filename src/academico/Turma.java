@@ -20,12 +20,17 @@ public class Turma {
         this.avs = new ArrayList<>();
     }
 
+    public String toString(){
+        return this.nome + " ("+ this.ano + "/" + this.sem + ")";
+    }
+
     public void medias(){
+        int totalAluno = this.alunos.size();
         double somaTotal = 0;
-        System.out.println("Médias da Turma: " + this.nome + " ("+ this.ano + "/" + this.sem + "):");
+        System.out.println("Médias da Turma: " + this + ":");
         for( Aluno a: this.alunos){
             double somaAluno = 0;
-            System.out.print(a.getNome() + " (Matrícula: " + a.getMat() + "): " );
+            System.out.print(a + ": " );
             for (Avaliacao av : this.avs){
                 double nota = av.nota(a.getCpf());
                 somaAluno += nota;
@@ -37,8 +42,9 @@ public class Turma {
             somaTotal = somaAluno;
 
         }
-        System.out.println("Média da Turma: " + (somaTotal/this.alunos.size()));
+        System.out.println("Média da Turma: " + (somaTotal/(totalAluno == 0 ? 1 : totalAluno)));
     }
+
 
 }
 

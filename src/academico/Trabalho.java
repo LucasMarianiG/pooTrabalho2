@@ -8,6 +8,7 @@ public class Trabalho extends Avaliacao {
 
     public Trabalho(String nome, Data dtAplic, double valor, int nIntegrantes) {
         super(nome, dtAplic, valor);
+        this.grupos = new ArrayList<>();
         this.nIntegrantes = nIntegrantes;
     }
 
