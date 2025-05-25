@@ -7,5 +7,4 @@ public class Professor extends Pessoa{
         super(nome, cpf);
         this.salario = salario;
     }
-
 }

@@ -40,6 +40,7 @@ public class Sistema {
                 return p;
             }
         }
+
         return null;
     }
 
@@ -51,6 +52,7 @@ public class Sistema {
                 return a;
             }
         }
+
         return null;
     }
 
@@ -59,11 +61,11 @@ public class Sistema {
     public void listarProfs() {
         if (this.profs.size() > 0) {
             System.out.println("Professores cadastrados:");
+
             for (Professor p : this.profs) {
                 System.out.println("* " + p);
             }
-        }
-        else {
+        } else {
             System.out.println("Nenhum professor cadastrado até o momento.");
         }
     }
@@ -73,11 +75,11 @@ public class Sistema {
     public void listarAlunos() {
         if (this.alunos.size() > 0) {
             System.out.println("Alunos cadastrados:");
+
             for (Aluno a : this.alunos) {
                 System.out.println("* " + a);
             }
-        }
-        else {
+        } else {
             System.out.println("Nenhum aluno cadastrado até o momento.");
         }
     }
@@ -87,13 +89,12 @@ public class Sistema {
     public void listarTurmas() {
         if (this.turmas.size() > 0) {
             System.out.println("Turmas cadastradas:");
+
             for (Turma t : this.turmas) {
                 t.medias();
             }
-        }
-        else {
+        } else {
             System.out.println("Nenhuma turma cadastrada até o momento.");
         }
     }
-
 }

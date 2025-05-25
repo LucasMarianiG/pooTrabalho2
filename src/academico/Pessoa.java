@@ -21,5 +21,4 @@ public class Pessoa {
     public String getCpf() {
         return cpf;
     }
-
 }

@@ -1,9 +1,10 @@
 package academico;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GrupoTrabalho {
-    private ArrayList<Aluno> alunos;
+    private List<Aluno> alunos;
     private double nota;
 
     public GrupoTrabalho() {

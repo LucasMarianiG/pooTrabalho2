@@ -1,10 +1,11 @@
 package academico;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Trabalho extends Avaliacao {
     private int nIntegrantes;
-    private ArrayList<GrupoTrabalho> grupos;
+    private List<GrupoTrabalho> grupos;
 
     public Trabalho(String nome, Data dtAplic, double valor, int nIntegrantes) {
         super(nome, dtAplic, valor);

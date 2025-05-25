@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 /**
  * Classe com as rotinas de entrada e saída do projeto
- * @author Hilario Seibel Junior, <Lucas Mariani e Douglas Bolis>
+ * @author Hilario Seibel Junior feat <Lucas Mariani e Douglas Bolis>
  */
 public class Entrada {
     private Scanner input;
@@ -70,14 +70,13 @@ public class Entrada {
     */
     public int menu() {
         // Imprime o menu principal, lê a opção escolhida pelo usuário e retorna a opção selecionada.
-
         String msg = "*********************\n" +
-                "Escolha uma opção:\n" +
-                "1) Cadastrar professor:\n" +
-                "2) Cadastrar aluno:\n" +
-                "3) Cadastrar turma:\n" +
-                "4) Listar turmas:\n" +
-                "0) Sair\n";
+            "Escolha uma opção:\n" +
+            "1) Cadastrar professor:\n" +
+            "2) Cadastrar aluno:\n" +
+            "3) Cadastrar turma:\n" +
+            "4) Listar turmas:\n" +
+            "0) Sair\n";
 
         int op = this.lerInteiro(msg);
 
@@ -105,8 +104,7 @@ public class Entrada {
         if (s.encontrarProfessor(cpf) == null) { // Garantindo que o não CPF esteja duplicado.
             Professor p = new Professor(nome, cpf, salario);
             s.novoProf(p);
-        }
-        else {
+        } else {
             System.out.println("Erro: CPF duplicado. academico.Professor não adicionado.");
         }
     }
@@ -127,8 +125,7 @@ public class Entrada {
         if (s.encontrarAluno(mat) == null) { // Garantindo que a Matrícula não esteja duplicada.
             Aluno a = new Aluno(nome, cpf, mat);
             s.novoAluno(a);
-        }
-        else {
+        } else {
             System.out.println("Erro: Matrícula duplicado. academico.Aluno não adicionado.");
         }
     }
@@ -151,8 +148,7 @@ public class Entrada {
         if (p != null) {
              Turma t = new Turma(nome, ano, sem, p);
             s.novaTurma(t);
-        }
-        else {
+        } else {
             System.out.println("Erro: Professor não encontrado.");
         }
     }
