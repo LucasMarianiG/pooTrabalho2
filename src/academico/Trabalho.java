@@ -13,6 +13,10 @@ public class Trabalho extends Avaliacao {
         this.nIntegrantes = nIntegrantes;
     }
 
+    public void setGrupos(List<GrupoTrabalho> grupos) {
+        this.grupos.addAll(grupos);
+    }
+
     public double nota(String cpf) {
         for(GrupoTrabalho gt : this.grupos) {
             if (gt.alunoNoGrupo(cpf)) {

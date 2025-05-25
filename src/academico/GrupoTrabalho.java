@@ -12,8 +12,16 @@ public class GrupoTrabalho {
         this.nota = 0;
     }
 
+    public void setAlunos(List<Aluno> alunos) {
+        this.alunos.addAll(alunos);
+    }
+
     public double getNota() {
         return this.nota;
+    }
+
+    public void setNota(double nota) {
+        this.nota = nota;
     }
 
     public boolean alunoNoGrupo(String cpf) {

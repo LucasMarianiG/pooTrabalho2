@@ -13,6 +13,10 @@ public class Prova extends Avaliacao {
         this.notas = new ArrayList<>();
     }
 
+    public int getnQuestoes() {
+        return nQuestoes;
+    }
+
     @Override
     public double nota(String cpf) {
         for(AlunoProva ap : this.notas) {
@@ -22,5 +26,9 @@ public class Prova extends Avaliacao {
         }
 
         return 0;
+    }
+
+    public void setNotas(List<AlunoProva> notas) {
+        this.notas.addAll(notas);
     }
 }

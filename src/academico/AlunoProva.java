@@ -1,8 +1,5 @@
 package academico;
 
-import java.util.ArrayList;
-import java.util.Vector;
-
 public class AlunoProva {
     private Aluno aluno;
     private double[] notas;
@@ -12,11 +9,15 @@ public class AlunoProva {
         this.notas = new double[nQuestoes];
     }
 
+    public void setNotas(double[] notas) {
+        this.notas = notas;
+    }
+
     public double notaTotal() {
         double total = 0;
 
-        for (int i = 0; i < this.notas.length; i++) {
-            total += this.notas[i];
+        for (double nota : this.notas) {
+            total += nota;
         }
 
         return total;

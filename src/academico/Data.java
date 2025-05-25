@@ -36,8 +36,4 @@ public class Data {
 
         return false;
     }
-
-    public String formato() {
-        return this.dia + "/" + this.mes + "/" + this.ano;
-    }
 }

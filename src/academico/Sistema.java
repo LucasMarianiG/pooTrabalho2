@@ -59,7 +59,7 @@ public class Sistema {
     /***************************************************/
 
     public void listarProfs() {
-        if (this.profs.size() > 0) {
+        if (!this.profs.isEmpty()) {
             System.out.println("Professores cadastrados:");
 
             for (Professor p : this.profs) {
@@ -73,7 +73,7 @@ public class Sistema {
     /***************************************************/
 
     public void listarAlunos() {
-        if (this.alunos.size() > 0) {
+        if (!this.alunos.isEmpty()) {
             System.out.println("Alunos cadastrados:");
 
             for (Aluno a : this.alunos) {
@@ -87,7 +87,7 @@ public class Sistema {
     /***************************************************/
 
     public void listarTurmas() {
-        if (this.turmas.size() > 0) {
+        if (!this.turmas.isEmpty()) {
             System.out.println("Turmas cadastradas:");
 
             for (Turma t : this.turmas) {

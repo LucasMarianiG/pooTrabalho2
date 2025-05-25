@@ -24,6 +24,14 @@ public class Turma {
         return this.nome + " ("+ this.ano + "/" + this.sem + ")";
     }
 
+    public void setAlunos(List<Aluno> alunos) {
+        this.alunos.addAll(alunos);
+    }
+
+    public void setAvaliacoes(List<Avaliacao> avs) {
+        this.avs.addAll(avs);
+    }
+
     public void medias(){
         int totalAluno = this.alunos.size();
         double somaTotal = 0;
