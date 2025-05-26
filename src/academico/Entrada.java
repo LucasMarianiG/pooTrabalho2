@@ -221,11 +221,10 @@ public class Entrada {
      */
     private List<Avaliacao> lerAvaliacoes(Sistema s, List<Aluno> alunos, int nAvaliacoes) {
         List<Avaliacao> avs = new ArrayList<>();
-        int qtdAvaliacoes = this.lerInteiro("Digite a quantidade de avaliações na disciplina: ");
         int avaliacoesRegistradas = 0;
 
-        while (avaliacoesRegistradas < qtdAvaliacoes) {
-            int tipoAvaliacao = this.lerInteiro("Escolha um tipo de avaliação:\n1) Prova\n2)Trabalho");
+        while (avaliacoesRegistradas < nAvaliacoes) {
+            int tipoAvaliacao = this.lerInteiro("Escolha um tipo de avaliação:\n1) Prova\n2)Trabalho\n");
 
             // Lendo os dados dos alunos de acordo com o tipo de avaliação digitada
             if (tipoAvaliacao == 1) {
@@ -339,7 +338,8 @@ public class Entrada {
             t.setAlunos(alunos);
 
             // Lendo dados das avaliações e registrando-os na turma.
-            List<Avaliacao> avs = this.lerAvaliacoes(s, alunos, alunos.size());
+            int qtdAvaliacoes = this.lerInteiro("Digite a quantidade de avaliações na disciplina: ");
+            List<Avaliacao> avs = this.lerAvaliacoes(s, alunos, qtdAvaliacoes);
             t.setAvaliacoes(avs);
 
             // Registrando a nova turma no sistema

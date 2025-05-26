@@ -51,7 +51,7 @@ public class Turma {
             // Verificando se a nota do aluno foi maior que 100, se for, ele limita em MAX:100//
             somaAluno = somaAluno > 100 ? 100: somaAluno;
             System.out.println("= " + somaAluno);
-            somaTotal = somaAluno;
+            somaTotal += somaAluno;
         }
 
         System.out.println("Média da Turma: " + (somaTotal/(totalAluno == 0 ? 1 : totalAluno)));

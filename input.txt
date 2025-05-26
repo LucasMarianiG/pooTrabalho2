@@ -1,0 +1,168 @@
+### Cadastrando um professor:
+1
+hilario
+123.456.789-00
+1000.0
+### Cadastrando outro professor:
+1
+ernani
+234.567.890-00
+2000
+### Cadastrando um aluno:
+2
+Ana
+111.111.111-11
+A111
+### Cadastrando outro aluno:
+2
+Bruno
+222.222.222-22
+B222
+### Cadastrando mais um aluno:
+2
+Carla
+333.333.333-33
+C333
+### Cadastrando mais um aluno:
+2
+Daniel
+444.444.444-44
+D444
+### Cadastrando mais um aluno:
+2
+Enzo
+555.555.555-55
+E555
+### Cadastrando o último aluno:
+2
+Fred
+666.666.666-66
+F666
+### Cadastrando uma turma:
+3
+Prog2
+2025
+2
+123.456.789-00
+### A turma terá 4 alunos:
+4
+B222
+C333
+D444
+E555
+### A turma terá 3 avaliações:
+3
+### A primeira avaliação é uma prova:
+1
+Prova 1
+3
+9
+2025
+30
+### Cada um dos 4 alunos terá nota em 3 questões:
+3
+10
+10
+10
+9
+8
+7
+10
+10
+10
+10
+10
+5
+### A segunda avaliação é um trabalho:
+2
+Trabalho 1
+10
+10
+2025
+40
+2
+### Há dois grupos neste trabalho:
+2
+### Cada grupo possui dois alunos e a nota do grupo:
+2
+B222
+C333
+35
+2
+D444
+E555
+42
+### A terceira avaliação é outra prova:
+1
+Prova 2
+12
+12
+2025
+30
+3
+0
+0
+0
+1
+1
+1
+10
+10
+10
+3
+3
+3
+### Cadastrando outra turma:
+3
+Estrutra de Dados
+2025
+2
+234.567.890-00
+### A turma terá 2 alunos:
+2
+A111
+F666
+### A turma terá 3 avaliações:
+3
+### A primeira avaliação é uma prova:
+1
+Prova 1
+3
+9
+2025
+30
+### Cada um dos 2 alunos terá nota em 2 questões:
+2
+15
+15
+9
+8
+### A segunda avaliação é um trabalho:
+2
+Trabalho 1
+10
+10
+2025
+40
+2
+### Há um grupo neste trabalho:
+1
+### O grupo possui dois alunos e a nota do grupo:
+2
+B222
+C333
+20
+### A terceira avaliação é outra prova:
+1
+Prova 2
+12
+12
+2025
+30
+1
+30
+20
+### Imprimir saída:
+4
+### Sair do programa:
+0
