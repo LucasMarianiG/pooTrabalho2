@@ -41,6 +41,9 @@ public class Sistema {
             }
         }
 
+        // TODO tratar todos os casos com null
+        // TODO criar as excessões pertinentes e lançá-las ao invés de retornar null
+
         return null;
     }
 
@@ -52,6 +55,9 @@ public class Sistema {
                 return a;
             }
         }
+
+        // TODO tratar todos os casos com null
+        // TODO criar as excessões pertinentes e lançá-las ao invés de retornar null
 
         return null;
     }

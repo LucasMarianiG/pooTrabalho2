@@ -6,10 +6,13 @@ package academico;
  */
 public class Main {
     public static void main(String[] args) {
-        Entrada io = new Entrada();
         Sistema s = new Sistema();
+        Entrada io = new Entrada(s);
 
         int op = io.menu();
+
+        // TODO incluir a chamada da função de salvar os dados a cada novo cadastro.
+        // TODO Inserir em todas as operações
 
         while (op != 0) {
             if (op == 1) {
