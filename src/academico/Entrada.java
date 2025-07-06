@@ -2,6 +2,7 @@ package academico;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -33,30 +34,35 @@ public class Entrada {
      */
     public Entrada(Sistema s) {
         try {
-            FileReader file = new FileReader("dados.txt");
+            String filename = "dados.txt";
+            FileReader file = new FileReader(filename);
             BufferedReader buff = new BufferedReader(file);
 
             String line = buff.readLine();
-
-            // TODO ?? verificar a cada leitura de linha se encontrou as tags na hora errada ??
+            System.out.println("Iniciando a leitura do arquivo '" + filename + "'...");
 
             while (line != null && !line.equals("FIM")) {
                 switch (line) {
                     case "PROF" -> this.lerProfArq(s, buff);
                     case "ALU" -> this.lerAlunoArq(s, buff);
                     case "TUR" -> this.lerTurmaArq(s, buff);
-                    default -> System.out.println("Erro ao ler dados do arquivo");
+                    default -> throw new LeituraTagArquivoException("Erro: Na leitura do arquivo de entrada, encontramos algumas informações inconsistentes e nem todas as informações foram registradas.");
                 }
                 line = buff.readLine();
             }
 
             buff.close();
+        } catch (FileNotFoundException error) {
+            System.out.println("Erro: Arquivo não encontrado");
         } catch (IOException error) {
-            System.out.println("Erro: Tivemos um problema ao ler alguns dados do arquivo");
+            System.out.println("Erro: Tivemos um problema ao ler um dos blocos de dados do arquivo");
         } catch (NumberFormatException error) {
-            System.out.println("Erro: Tivemos um problema ao converter uma das informações do arquivo para o tipo numérico");
+            System.out.println("Erro: Tivemos um problema ao converter uma das informações do arquivo para o valor numérico");
+        } catch (LeituraTagArquivoException error) {
+            System.out.println(error.getMessage());
         } finally {
             this.initialStatements();
+            System.out.println("...Finalizamos a leitura do arquivo.\n");
         }
     }
 
@@ -65,6 +71,47 @@ public class Entrada {
     private void initialStatements() {
         // Habilitando a leitura pelo teclado
         this.input = new Scanner(System.in);
+    }
+
+    /***************************************************/
+
+    /**
+     * Faz a leitura de uma linha inteira de um arquivo
+     * @param buff: Um objeto da classe BufferedReader
+     * @return Uma String contendo a linha que foi lida
+     */
+    private String lerLinhaArq(BufferedReader buff) throws IOException, LeituraTagArquivoException {
+        String line = buff.readLine();
+
+        if (line == null || line.equals("PROF") || line.equals("ALU") || line.equals("TUR") || line.equals("FIM")) {
+            throw new LeituraTagArquivoException("Erro: Identificamos uma das Tags de controle num momento inesperado.");
+        }
+
+        return line;
+    }
+
+    /***************************************************/
+
+    /**
+     * Faz a leitura de um número inteiro de um arquivo
+     * @param buff: Um objeto da classe BufferedReader
+     * @return O número digitado pelo usuário convertido para int
+     */
+    private int lerInteiroArq(BufferedReader buff) throws IOException, NumberFormatException, LeituraTagArquivoException {
+        String linha = this.lerLinhaArq(buff);
+        return Integer.parseInt(linha);
+    }
+
+    /***************************************************/
+
+    /**
+     * Faz a leitura de um double de um arquivo
+     * @param buff: Um objeto da classe BufferedReader
+     * @return O número digitado pelo usuário convertido para double
+     */
+    private double lerDoubleArq(BufferedReader buff) throws IOException, NumberFormatException, LeituraTagArquivoException {
+        String linha = this.lerLinhaArq(buff);
+        return Double.parseDouble(linha);
     }
 
     /***************************************************/
@@ -118,7 +165,7 @@ public class Entrada {
      * @param s: Um objeto da classe academico.Sistema
      * @return A instância do professor encontrado
      */
-    private Professor lerProf(Sistema s) {
+    private Professor lerProf(Sistema s) throws PessoaNaoEncontradaException {
         String cpfProf = this.lerLinha("Digite o cpf do Professor: ");
         return s.encontrarProfessor(cpfProf);
     }
@@ -130,7 +177,7 @@ public class Entrada {
      * @param s: Um objeto da classe academico.Sistema
      * @return A lista de alunos
      */
-    private List<Aluno> lerAlunos(Sistema s) {
+    private List<Aluno> lerAlunos(Sistema s) throws PessoaNaoEncontradaException {
         List<Aluno> alunos = new ArrayList<>();
         int qtdAlunos = this.lerInteiro("Digite a quantidade de alunos na disciplina: ");
         int alunosRegistrados = 0;
@@ -139,13 +186,9 @@ public class Entrada {
             String matAluno = this.lerLinha("Digite a matrícula do aluno: ");
             Aluno a = s.encontrarAluno(matAluno);
 
-            if (a != null) {
-                alunos.add(a);
-                alunosRegistrados += 1;
-                System.out.println(alunosRegistrados + "/" + qtdAlunos + " alunos registrados com sucesso.");
-            } else {
-                System.out.println("Erro: Aluno '" + matAluno + "' não encontrado.");
-            }
+            alunos.add(a);
+            alunosRegistrados += 1;
+            System.out.println(alunosRegistrados + "/" + qtdAlunos + " alunos registrados com sucesso.");
         }
 
         return alunos;
@@ -213,7 +256,7 @@ public class Entrada {
      * @param s: Um objeto da classe academico.Sistema
      * @return Um objeto de academico.GrupoTrabalho
      */
-    private GrupoTrabalho lerGrupoTrabalho(Sistema s) {
+    private GrupoTrabalho lerGrupoTrabalho(Sistema s) throws PessoaNaoEncontradaException {
         GrupoTrabalho gt = new GrupoTrabalho();
         List<Aluno> alunos = new ArrayList<>();
 
@@ -224,13 +267,9 @@ public class Entrada {
             String matAluno = this.lerLinha("Digite a matrícula do aluno: ");
             Aluno a = s.encontrarAluno(matAluno);
 
-            if (a != null) {
-                alunos.add(a);
-                alunosRegistrados += 1;
-                System.out.println(alunosRegistrados + "/" + qtdAlunos + " alunos inseridos no grupo com sucesso.");
-            } else {
-                System.out.println("Erro: Aluno '" + matAluno + "' não encontrado.");
-            }
+            alunos.add(a);
+            alunosRegistrados += 1;
+            System.out.println(alunosRegistrados + "/" + qtdAlunos + " alunos inseridos no grupo com sucesso.");
         }
 
         double nota = this.lerDouble("Nota do grupo: ");
@@ -248,7 +287,7 @@ public class Entrada {
      * @param alunos: Uma lista de academico.Aluno
      * @return Um objeto de academico.Trabalho
      */
-    private Trabalho lerTrabalho(Sistema s, List<Aluno> alunos) {
+    private Trabalho lerTrabalho(Sistema s, List<Aluno> alunos) throws PessoaNaoEncontradaException {
         List<GrupoTrabalho> grupos = new ArrayList<>();
 
         String nomeTrab = this.lerLinha("Informe o nome desta avaliação: ");
@@ -282,7 +321,7 @@ public class Entrada {
      * @param nAvaliacoes: Um número da classe Integer
      * @return A lista de alunos
      */
-    private List<Avaliacao> lerAvaliacoes(Sistema s, List<Aluno> alunos, int nAvaliacoes) {
+    private List<Avaliacao> lerAvaliacoes(Sistema s, List<Aluno> alunos, int nAvaliacoes) throws PessoaNaoEncontradaException {
         List<Avaliacao> avs = new ArrayList<>();
         int avaliacoesRegistradas = 0;
 
@@ -290,18 +329,18 @@ public class Entrada {
             int tipoAvaliacao = this.lerInteiro("Escolha um tipo de avaliação:\n1) Prova\n2)Trabalho\n");
 
             // Lendo os dados dos alunos de acordo com o tipo de avaliação digitada
-            if (tipoAvaliacao == 1) {
+            if (tipoAvaliacao == 1 || tipoAvaliacao == 2) {
                 avaliacoesRegistradas += 1;
 
-                // Lendo dados dos alunos na Prova
-                Prova prv = this.lerProva(s, alunos);
-                avs.add(prv);
-            } else if (tipoAvaliacao == 2) {
-                avaliacoesRegistradas += 1;
-
-                // Lendo dados dos alunos no trabaho
-                Trabalho trb = this.lerTrabalho(s, alunos);
-                avs.add(trb);
+                if (tipoAvaliacao == 1) {
+                    // Lendo dados dos alunos na Prova
+                    Prova prv = this.lerProva(s, alunos);
+                    avs.add(prv);
+                } else {
+                    // Lendo dados dos alunos no trabaho
+                    Trabalho trb = this.lerTrabalho(s, alunos);
+                    avs.add(trb);
+                }
             } else {
                 System.out.println("Erro: Tipo de avaliação inválida.");
             }
@@ -317,23 +356,28 @@ public class Entrada {
     * @return Inteiro contendo a opção escolhida pelo usuário
     */
     public int menu() {
-        // Imprime o menu principal, lê a opção escolhida pelo usuário e retorna a opção selecionada.
-        String msg = "*********************\n" +
-            "Escolha uma opção:\n" +
-            "1) Cadastrar professor:\n" +
-            "2) Cadastrar aluno:\n" +
-            "3) Cadastrar turma:\n" +
-            "4) Listar turmas:\n" +
-            "0) Sair\n";
+        try {
+            // Imprime o menu principal, lê a opção escolhida pelo usuário e retorna a opção selecionada.
+            String msg = "*********************\n" +
+                    "Escolha uma opção:\n" +
+                    "1) Cadastrar professor:\n" +
+                    "2) Cadastrar aluno:\n" +
+                    "3) Cadastrar turma:\n" +
+                    "4) Listar turmas:\n" +
+                    "0) Sair\n";
 
-        int op = this.lerInteiro(msg);
+            int op = this.lerInteiro(msg);
 
-        while (op < 0 || op > 4) {
-            System.out.println("Opção inválida. Tente novamente: ");
-            op = this.lerInteiro(msg);
+            while (op < 0 || op > 4) {
+                System.out.println("Opção inválida. Tente novamente: ");
+                op = this.lerInteiro(msg);
+            }
+
+            return op;
+        } catch (InputMismatchException error) {
+            System.out.println("Erro: Tivemos um problema ao capturar a opção inserida.");
+            return -1;
         }
-
-        return op;
     }
 
     /***************************************************/
@@ -343,16 +387,18 @@ public class Entrada {
      * @param s: Um objeto da classe academico.Sistema
      * @param buff: Um objeto da classe BufferedReader
      */
-    public void lerProfArq(Sistema s, BufferedReader buff) throws IOException {
-        String nome = buff.readLine();
-        String cpf = buff.readLine();
-        double salario = Double.parseDouble(buff.readLine());
+    public void lerProfArq(Sistema s, BufferedReader buff) throws IOException, LeituraTagArquivoException {
+        String nome = this.lerLinhaArq(buff);
+        String cpf = this.lerLinhaArq(buff);
+        double salario = this.lerDoubleArq(buff);
 
-        if (s.encontrarProfessor(cpf) == null) { // Garantindo que o não CPF esteja duplicado.
+        try {
+            s.encontrarProfessor(cpf);
+            System.out.println("Erro: CPF duplicado. academico.Professor não adicionado.");
+        } catch (PessoaNaoEncontradaException error) {
             Professor p = new Professor(nome, cpf, salario);
             s.novoProf(p);
-        } else {
-            System.out.println("Erro: CPF duplicado. academico.Professor não adicionado.");
+            System.out.println(s.qtdProfs() + " professor(es) cadastrado(s) com sucesso!");
         }
     }
 
@@ -363,17 +409,24 @@ public class Entrada {
      * @param s: Um objeto da classe academico.Sistema
      */
     public void cadProf(Sistema s) {
-        s.listarProfs();
+        try {
+            s.listarProfs();
 
-        String nome = this.lerLinha("Digite o nome do professor: ");
-        String cpf = this.lerLinha("Digite o cpf do professor: ");
-        double salario = this.lerDouble("Digite o salário do professor: R$ ");
+            String nome = this.lerLinha("Digite o nome do professor: ");
+            String cpf = this.lerLinha("Digite o cpf do professor: ");
+            double salario = this.lerDouble("Digite o salário do professor: R$ ");
 
-        if (s.encontrarProfessor(cpf) == null) { // Garantindo que o não CPF esteja duplicado.
-            Professor p = new Professor(nome, cpf, salario);
-            s.novoProf(p);
-        } else {
-            System.out.println("Erro: CPF duplicado. academico.Professor não adicionado.");
+            try {
+                s.encontrarProfessor(cpf);
+                System.out.println("Erro: CPF duplicado. academico.Professor não adicionado.");
+            } catch (PessoaNaoEncontradaException error) {
+                Professor p = new Professor(nome, cpf, salario);
+                s.novoProf(p);
+            }
+        } catch (NumberFormatException error) {
+            System.out.println("Erro: O salário informado é inválido.");
+        } catch (InputMismatchException error) {
+            System.out.println("Erro: Uma das informações do Professor foi inserida de maneira incorreta.");
         }
     }
 
@@ -384,16 +437,18 @@ public class Entrada {
      * @param s: Um objeto da classe academico.Sistema
      * @param buff: Um objeto da classe BufferedReader
      */
-    public void lerAlunoArq(Sistema s, BufferedReader buff) throws IOException {
-        String nome = buff.readLine();
-        String cpf = buff.readLine();
-        String mat = buff.readLine();
+    public void lerAlunoArq(Sistema s, BufferedReader buff) throws IOException, LeituraTagArquivoException {
+        String nome = this.lerLinhaArq(buff);
+        String cpf = this.lerLinhaArq(buff);
+        String mat = this.lerLinhaArq(buff);
 
-        if (s.encontrarAluno(mat) == null) { // Garantindo que a Matrícula não esteja duplicada.
+        try {
+            s.encontrarAluno(mat);
+            System.out.println("Erro: Matrícula duplicado. academico.Aluno não adicionado.");
+        } catch (PessoaNaoEncontradaException error) {
             Aluno a = new Aluno(nome, cpf, mat);
             s.novoAluno(a);
-        } else {
-            System.out.println("Erro: Matrícula duplicado. academico.Aluno não adicionado.");
+            System.out.println(s.qtdAlunos() + " aluno(s) cadastrado(s) com sucesso!");
         }
     }
 
@@ -406,15 +461,20 @@ public class Entrada {
     public void cadAluno(Sistema s) {
         s.listarAlunos();
 
-        String nome = this.lerLinha("Digite o nome do aluno: ");
-        String cpf = this.lerLinha("Digite o cpf do aluno: ");
-        String mat = this.lerLinha("Digite a matrícula do aluno: ");
+        try {
+            String nome = this.lerLinha("Digite o nome do aluno: ");
+            String cpf = this.lerLinha("Digite o cpf do aluno: ");
+            String mat = this.lerLinha("Digite a matrícula do aluno: ");
 
-        if (s.encontrarAluno(mat) == null) { // Garantindo que a Matrícula não esteja duplicada.
-            Aluno a = new Aluno(nome, cpf, mat);
-            s.novoAluno(a);
-        } else {
-            System.out.println("Erro: Matrícula duplicado. academico.Aluno não adicionado.");
+            try {
+                s.encontrarAluno(mat);
+                System.out.println("Erro: Matrícula duplicado. academico.Aluno não adicionado.");
+            } catch (PessoaNaoEncontradaException error) {
+                Aluno a = new Aluno(nome, cpf, mat);
+                s.novoAluno(a);
+            }
+        } catch (InputMismatchException error) {
+            System.out.println("Erro: Uma das informações do Aluno foi inserida de maneira incorreta.");
         }
     }
 
@@ -428,12 +488,12 @@ public class Entrada {
      * @param qtdQuestoes: quantidade de questões na Prova
      * @return Um objeto de academico.AlunoProva
      */
-    private AlunoProva lerAlunoProvaArq(Sistema s, BufferedReader buff, Aluno aluno, int qtdQuestoes) throws IOException, NumberFormatException {
+    private AlunoProva lerAlunoProvaArq(Sistema s, BufferedReader buff, Aluno aluno, int qtdQuestoes) throws IOException, NumberFormatException, LeituraTagArquivoException {
         AlunoProva ap = new AlunoProva(aluno, qtdQuestoes);
         double[] notas = new double[qtdQuestoes];
 
         for (int i = 0; i < qtdQuestoes; i++) {
-            notas[i] = Double.parseDouble(buff.readLine());
+            notas[i] = this.lerDoubleArq(buff);
         }
 
         ap.setNotas(notas);
@@ -450,7 +510,7 @@ public class Entrada {
      * @param alunos: Uma lista de academico.Aluno
      * @return Um objeto de academico.Prova
      */
-    private Prova lerProvaArq(Sistema s, BufferedReader buff, List<Aluno> alunos, String nomeProva, Data dataProva, Double notaMaxProva, int qtdQuestoesProva) throws IOException, NumberFormatException {
+    private Prova lerProvaArq(Sistema s, BufferedReader buff, List<Aluno> alunos, String nomeProva, Data dataProva, Double notaMaxProva, int qtdQuestoesProva) throws IOException, NumberFormatException, LeituraTagArquivoException {
         List<AlunoProva> alunoProvas = new ArrayList<>();
         Prova prova = new Prova(nomeProva, dataProva, notaMaxProva, qtdQuestoesProva);
 
@@ -470,36 +530,33 @@ public class Entrada {
      * Lê os dados dos alunos no GrupoTrabalho num arquivo e retorna-os.
      * @param s: Um objeto da classe academico.Sistema
      * @param buff: Um objeto da classe BufferedReader
+     * @param t: Um objeto da classe academico.Turma
      * @param numeroGrupo: Um número da classe Integer
      * @param qtdIntgranTrab: Um número da classe Integer
      * @return Um objeto de academico.GrupoTrabalho
      */
-    private GrupoTrabalho lerGrupoTrabalhoArq(Sistema s, BufferedReader buff, int numeroGrupo, int qtdIntgranTrab) throws IOException, NumberFormatException {
+    private GrupoTrabalho lerGrupoTrabalhoArq(Sistema s, BufferedReader buff, Turma t, int numeroGrupo, int qtdIntgranTrab) throws IOException, NumberFormatException, PessoaNaoEncontradaException, LeituraTagArquivoException, AlunoGrupoTrabalhoException {
         GrupoTrabalho gt = new GrupoTrabalho();
         List<Aluno> alunos = new ArrayList<>();
 
         int alunosProcessados = 0;
-        int qtdAlunos = Integer.parseInt(buff.readLine());
+        int qtdAlunos = this.lerInteiroArq(buff);
 
         if (qtdAlunos > qtdIntgranTrab) {
-            return null;
+            throw new AlunoGrupoTrabalhoException("Erro: A quantidade de alunos no trabalho excedeu o limite permitido.");
         }
 
         while (alunosProcessados < qtdAlunos) {
-            String matAluno = buff.readLine();
+            String matAluno = this.lerLinhaArq(buff);
             Aluno a = s.encontrarAluno(matAluno);
 
-            if (a != null) {
-                alunos.add(a);
-                System.out.println(alunos.size() + "/" + qtdAlunos + " alunos inseridos no grupo " + numeroGrupo + " com sucesso.");
-            } else {
-                System.out.println("Erro: Aluno '" + matAluno + "' não encontrado.");
-            }
+            alunos.add(a);
+            System.out.println(alunos.size() + "/" + qtdAlunos + " alunos inseridos no grupo " + numeroGrupo + " da turma '" + t + "' com sucesso.");
 
             alunosProcessados += 1;
         }
 
-        double nota = Double.parseDouble(buff.readLine());
+        double nota = this.lerDoubleArq(buff);
         gt.setAlunos(alunos);
         gt.setNota(nota);
 
@@ -512,28 +569,26 @@ public class Entrada {
      * Lê os dados do Trabalho de um arquivo e retorna-o.
      * @param s: Um objeto da classe academico.Sistema
      * @param buff: Um objeto da classe BufferedReader
-     * @param alunos: Uma lista de academico.Aluno
+     * @param t: Um objeto da classe academico.Turma
+     * @param alunos: Uma lista de objetos da classe academico.Aluno
+     * @param nomeTrab: Nome do trabalho
+     * @param dataTrab: Um objeto da classe academico.Data
+     * @param notaMaxTrab: Um valor numérico para a nota máxima do trabalho
+     * @param qtdIntgranTrab: Um inteiro definindo a quantidade máxima de alunos no trabalho
      * @return Um objeto de academico.Trabalho
      */
-    private Trabalho lerTrabalhoArq(Sistema s, BufferedReader buff, List<Aluno> alunos, String nomeTrab, Data dataTrab, Double pontoMaxTrab, int qtdIntgranTrab) throws IOException, NumberFormatException {
+    private Trabalho lerTrabalhoArq(Sistema s, BufferedReader buff, Turma t, List<Aluno> alunos, String nomeTrab, Data dataTrab, Double notaMaxTrab, int qtdIntgranTrab) throws IOException, NumberFormatException, PessoaNaoEncontradaException, LeituraTagArquivoException, AlunoGrupoTrabalhoException {
         List<GrupoTrabalho> grupos = new ArrayList<>();
-        Trabalho trab = new Trabalho(nomeTrab, dataTrab, pontoMaxTrab, qtdIntgranTrab);
+        Trabalho trab = new Trabalho(nomeTrab, dataTrab, notaMaxTrab, qtdIntgranTrab);
 
-        int numGrupos = Integer.parseInt(buff.readLine());
+        int numGrupos = this.lerInteiroArq(buff);
 
         for (int i = 0; i < numGrupos; i++) {
-            GrupoTrabalho grupo = this.lerGrupoTrabalhoArq(s, buff, i + 1, qtdIntgranTrab);
-
-            if (grupo != null) {
-                grupos.add(grupo);
-            }
+            GrupoTrabalho grupo = this.lerGrupoTrabalhoArq(s, buff, t, i + 1, qtdIntgranTrab);
+            grupos.add(grupo);
         }
-
-        if (grupos.isEmpty()) {
-            return null;
-        }
-
         trab.setGrupos(grupos);
+
         return trab;
     }
 
@@ -543,37 +598,32 @@ public class Entrada {
      * Lê a MATRÍCULA de uma lista de academico.Aluno existentes e retorna-os.
      * @param s: Um objeto da classe academico.Sistema
      * @param buff: Um objeto da classe BufferedReader
+     * @param t: Um objeto da classe academico.Turma
      * @param alunos: Uma lista de objetos da classe academico.Aluno
      * @param nAvaliacoes: Um número da classe Integer
      * @return A lista de alunos
      */
-    private List<Avaliacao> lerAvaliacoesArq(Sistema s, BufferedReader buff, List<Aluno> alunos, int nAvaliacoes) throws IOException, NumberFormatException {
+    private List<Avaliacao> lerAvaliacoesArq(Sistema s, BufferedReader buff, Turma t, List<Aluno> alunos, int nAvaliacoes) throws IOException, NumberFormatException, PessoaNaoEncontradaException, LeituraTagArquivoException, AlunoGrupoTrabalhoException {
         List<Avaliacao> avs = new ArrayList<>();
         int avaliacoesProcessadas = 0;
 
         while (avaliacoesProcessadas < nAvaliacoes) {
-            String tipoAvaliacao = buff.readLine();
+            String tipoAvaliacao = this.lerLinhaArq(buff);
 
             // Lendo os dados dos alunos de acordo com o tipo de avaliação digitada
             if (tipoAvaliacao.equals("PROV") || tipoAvaliacao.equals("TRAB")) {
-                String nomeTrab = buff.readLine();
-                int diaAv = Integer.parseInt(buff.readLine());
-                int mesAv = Integer.parseInt(buff.readLine());
-                int anoAv = Integer.parseInt(buff.readLine());
-                double notaMaxAv = Double.parseDouble(buff.readLine());
-                int qtdItemAv = Integer.parseInt(buff.readLine());
+                String nomeTrab = this.lerLinhaArq(buff);
+                int diaAv = this.lerInteiroArq(buff);
+                int mesAv = this.lerInteiroArq(buff);
+                int anoAv = this.lerInteiroArq(buff);
+                double notaMaxAv = this.lerDoubleArq(buff);
+                int qtdItemAv = this.lerInteiroArq(buff);
 
                 Data dataAv = new Data(diaAv, mesAv, anoAv);
-
-                if (tipoAvaliacao.equals("PROV")) {
-                    // Lendo dados dos alunos na Prova
-                    Prova prv = this.lerProvaArq(s, buff, alunos, nomeTrab, dataAv, notaMaxAv, qtdItemAv);
-                    avs.add(prv);
-                } else {
-                    // Lendo dados dos alunos no trabaho
-                    Trabalho trb = this.lerTrabalhoArq(s, buff, alunos, nomeTrab, dataAv, notaMaxAv, qtdItemAv);
-                    avs.add(trb);
-                }
+                Avaliacao av = tipoAvaliacao.equals("PROV")
+                        ? this.lerProvaArq(s, buff, alunos, nomeTrab, dataAv, notaMaxAv, qtdItemAv)
+                        : this.lerTrabalhoArq(s, buff, t, alunos, nomeTrab, dataAv, notaMaxAv, qtdItemAv);
+                avs.add(av);
             } else {
                 System.out.println("Erro: Tipo de avaliação inválida.");
             }
@@ -592,35 +642,31 @@ public class Entrada {
      * @param s: Um objeto da classe academico.Sistema
      * @param buff: Um objeto da classe BufferedReader
      */
-    public void lerTurmaArq(Sistema s, BufferedReader buff) throws IOException, NumberFormatException {
-        String nome = buff.readLine();
-        int ano = Integer.parseInt(buff.readLine());
-        int sem = Integer.parseInt(buff.readLine());
-        String cpfProf = buff.readLine();
+    public void lerTurmaArq(Sistema s, BufferedReader buff) throws IOException, LeituraTagArquivoException {
+        try {
+            String nome = this.lerLinhaArq(buff);
+            int ano = this.lerInteiroArq(buff);
+            int sem = this.lerInteiroArq(buff);
+            String cpfProf = this.lerLinhaArq(buff);
 
-        // Encontrando o professor da turma
-        Professor p = s.encontrarProfessor(cpfProf);
+            // Encontrando o professor da turma
+            Professor p = s.encontrarProfessor(cpfProf);
 
-        // Criando nova turma
-        Turma t = new Turma(nome, ano, sem, p);
+            // Criando nova turma
+            Turma t = new Turma(nome, ano, sem, p);
+            System.out.println("Iniciando o cadastro da turma '" + t + "'");
 
-        if (p != null) {
             // Lendo dados dos alunos e matriculando-os na turma.
             List<Aluno> alunos = new ArrayList<>();
-            int qtdAlunos = Integer.parseInt(buff.readLine());
+            int qtdAlunos = this.lerInteiroArq(buff);
             int alunosProcessados = 0;
 
             while (alunosProcessados < qtdAlunos) {
-                String matAluno = buff.readLine();
+                String matAluno = this.lerLinhaArq(buff);
                 Aluno a = s.encontrarAluno(matAluno);
 
-                if (a != null) {
-                    alunos.add(a);
-                    System.out.println(alunos.size() + "/" + qtdAlunos + " alunos registrados com sucesso na turma '" + t + "'.");
-                } else {
-                    System.out.println("Erro: Aluno '" + matAluno + "' não encontrado.");
-                }
-
+                alunos.add(a);
+                System.out.println(alunos.size() + "/" + qtdAlunos + " alunos registrados com sucesso na turma '" + t + "'.");
                 alunosProcessados += 1;
             }
 
@@ -628,8 +674,8 @@ public class Entrada {
                 t.setAlunos(alunos);
 
                 // Lendo dados das avaliações e registrando-os na turma.
-                int qtdAvaliacoes = Integer.parseInt(buff.readLine());
-                List<Avaliacao> avs = this.lerAvaliacoesArq(s, buff, alunos, qtdAvaliacoes);
+                int qtdAvaliacoes = this.lerInteiroArq(buff);
+                List<Avaliacao> avs = this.lerAvaliacoesArq(s, buff, t, alunos, qtdAvaliacoes);
 
                 // Registrando as avaliações na turma somente se a quantidade de avaliações processadas for igual ao número de avaliações esperadas
                 if (avs.size() == qtdAvaliacoes) {
@@ -637,14 +683,19 @@ public class Entrada {
 
                     // Registrando a nova turma no sistema
                     s.novaTurma(t);
+                    System.out.println(s.qtdTurmas() + " turma(s) cadastrada(s) com sucesso!");
                 } else {
                     System.out.println("Erro: Turma '" + t + "' não cadastrada, não encontramos todas as avaliações informadas.");
                 }
             } else {
                 System.out.println("Erro: Turma '" + t + "' não cadastrada, não encontramos todos os alunos informados.");
             }
-        } else {
-            System.out.println("Erro: Turma '" + t + "' não cadastrada, Professor não encontrado.");
+        } catch (PessoaNaoEncontradaException | AlunoGrupoTrabalhoException error) {
+            System.out.println(error.getMessage());
+        } catch (NumberFormatException error) {
+            System.out.println("Erro: Tivemos problema ao converter uma das informações para o valor numérico.");
+        } catch (InputMismatchException error) {
+            System.out.println("Erro: Uma das informações da Turma foi inserida de maneira incorreta.");
         }
     }
 
@@ -657,14 +708,14 @@ public class Entrada {
     public void cadTurma(Sistema s) {
         s.listarTurmas();
 
-        String nome = this.lerLinha("Digite o nome da disciplina: ");
-        int ano = this.lerInteiro("Digite o ano da disciplina: ");
-        int sem = this.lerInteiro("Digite o semestre da disciplina: ");
+        try {
+            String nome = this.lerLinha("Digite o nome da disciplina: ");
+            int ano = this.lerInteiro("Digite o ano da disciplina: ");
+            int sem = this.lerInteiro("Digite o semestre da disciplina: ");
 
-        // Encontrando o professor da turma
-        Professor p = this.lerProf(s);
+            // Encontrando o professor da turma
+            Professor p = this.lerProf(s);
 
-        if (p != null) {
             // Criando nova turma
             Turma t = new Turma(nome, ano, sem, p);
 
@@ -679,8 +730,12 @@ public class Entrada {
 
             // Registrando a nova turma no sistema
             s.novaTurma(t);
-        } else {
-            System.out.println("Erro: Professor não encontrado.");
+        } catch (PessoaNaoEncontradaException error) {
+            System.out.println(error.getMessage());
+        } catch (NumberFormatException error) {
+            System.out.println("Erro: Tivemos problema ao converter uma das informações para o valor numérico.");
+        } catch (InputMismatchException error) {
+            System.out.println("Erro: Uma das informações do Professor foi inserida de maneira incorreta.");
         }
     }
 }

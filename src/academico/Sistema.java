@@ -34,32 +34,24 @@ public class Sistema {
 
     /***************************************************/
 
-    public Professor encontrarProfessor(String cpf) {
+    public Professor encontrarProfessor(String cpf) throws PessoaNaoEncontradaException {
         for (Professor p : this.profs) {
-            if (p.getCpf().equals(cpf)) {
-                return p;
-            }
+            if (p.getCpf().equals(cpf)) return p;
         }
 
-        // TODO tratar todos os casos com null
-        // TODO criar as excessões pertinentes e lançá-las ao invés de retornar null
-
-        return null;
+        throw new PessoaNaoEncontradaException("Erro: Professor (CPF '" + cpf + "') não encontrado.");
     }
 
     /***************************************************/
 
-    public Aluno encontrarAluno(String mat) {
+    public Aluno encontrarAluno(String mat) throws PessoaNaoEncontradaException {
         for (Aluno a : this.alunos) {
             if (a.getMat().equals(mat)) {
                 return a;
             }
         }
 
-        // TODO tratar todos os casos com null
-        // TODO criar as excessões pertinentes e lançá-las ao invés de retornar null
-
-        return null;
+        throw new PessoaNaoEncontradaException("Erro: Aluno (Matrícula '" + mat + "') não encontrado.");
     }
 
     /***************************************************/
@@ -102,5 +94,23 @@ public class Sistema {
         } else {
             System.out.println("Nenhuma turma cadastrada até o momento.");
         }
+    }
+
+    /***************************************************/
+
+    public int qtdProfs() {
+        return this.profs.size();
+    }
+
+    /***************************************************/
+
+    public int qtdAlunos() {
+        return this.alunos.size();
+    }
+
+    /***************************************************/
+
+    public int qtdTurmas() {
+        return this.turmas.size();
     }
 }
