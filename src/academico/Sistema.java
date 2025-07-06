@@ -57,42 +57,42 @@ public class Sistema {
     /***************************************************/
 
     public void listarProfs() {
-        if (!this.profs.isEmpty()) {
+        if (this.profs.isEmpty()) {
+            System.out.println("Nenhum professor cadastrado até o momento.");
+        } else {
             System.out.println("Professores cadastrados:");
 
             for (Professor p : this.profs) {
                 System.out.println("* " + p);
             }
-        } else {
-            System.out.println("Nenhum professor cadastrado até o momento.");
         }
     }
 
     /***************************************************/
 
     public void listarAlunos() {
-        if (!this.alunos.isEmpty()) {
+        if (this.alunos.isEmpty()) {
+            System.out.println("Nenhum aluno cadastrado até o momento.");
+        } else {
             System.out.println("Alunos cadastrados:");
 
             for (Aluno a : this.alunos) {
                 System.out.println("* " + a);
             }
-        } else {
-            System.out.println("Nenhum aluno cadastrado até o momento.");
         }
     }
 
     /***************************************************/
 
     public void listarTurmas() {
-        if (!this.turmas.isEmpty()) {
+        if (this.turmas.isEmpty()) {
+            System.out.println("Nenhuma turma cadastrada até o momento.");
+        } else {
             System.out.println("Turmas cadastradas:");
 
             for (Turma t : this.turmas) {
                 t.medias();
             }
-        } else {
-            System.out.println("Nenhuma turma cadastrada até o momento.");
         }
     }
 

@@ -95,7 +95,7 @@ public class Entrada {
     /**
      * Faz a leitura de um número inteiro de um arquivo
      * @param buff: Um objeto da classe BufferedReader
-     * @return O número digitado pelo usuário convertido para int
+     * @return O número contendo a linha lida convertido para int
      */
     private int lerInteiroArq(BufferedReader buff) throws IOException, NumberFormatException, LeituraTagArquivoException {
         String linha = this.lerLinhaArq(buff);
@@ -107,7 +107,7 @@ public class Entrada {
     /**
      * Faz a leitura de um double de um arquivo
      * @param buff: Um objeto da classe BufferedReader
-     * @return O número digitado pelo usuário convertido para double
+     * @return O número contendo a linha lida convertido para double
      */
     private double lerDoubleArq(BufferedReader buff) throws IOException, NumberFormatException, LeituraTagArquivoException {
         String linha = this.lerLinhaArq(buff);
@@ -226,7 +226,7 @@ public class Entrada {
      * @param alunos: Uma lista de academico.Aluno
      * @return Um objeto de academico.Prova
      */
-    private Prova lerProva(Sistema s, List<Aluno> alunos) {
+    private Prova lerProva(Sistema s, List<Aluno> alunos) throws InputMismatchException, NumberFormatException {
         List<AlunoProva> alunoProvas = new ArrayList<>();
 
         String nomeProva = this.lerLinha("Informe o nome desta prova: ");
@@ -256,7 +256,7 @@ public class Entrada {
      * @param s: Um objeto da classe academico.Sistema
      * @return Um objeto de academico.GrupoTrabalho
      */
-    private GrupoTrabalho lerGrupoTrabalho(Sistema s) throws PessoaNaoEncontradaException {
+    private GrupoTrabalho lerGrupoTrabalho(Sistema s) throws InputMismatchException, NumberFormatException, PessoaNaoEncontradaException {
         GrupoTrabalho gt = new GrupoTrabalho();
         List<Aluno> alunos = new ArrayList<>();
 
@@ -287,7 +287,7 @@ public class Entrada {
      * @param alunos: Uma lista de academico.Aluno
      * @return Um objeto de academico.Trabalho
      */
-    private Trabalho lerTrabalho(Sistema s, List<Aluno> alunos) throws PessoaNaoEncontradaException {
+    private Trabalho lerTrabalho(Sistema s, List<Aluno> alunos) throws InputMismatchException, NumberFormatException, PessoaNaoEncontradaException {
         List<GrupoTrabalho> grupos = new ArrayList<>();
 
         String nomeTrab = this.lerLinha("Informe o nome desta avaliação: ");
@@ -321,7 +321,7 @@ public class Entrada {
      * @param nAvaliacoes: Um número da classe Integer
      * @return A lista de alunos
      */
-    private List<Avaliacao> lerAvaliacoes(Sistema s, List<Aluno> alunos, int nAvaliacoes) throws PessoaNaoEncontradaException {
+    private List<Avaliacao> lerAvaliacoes(Sistema s, List<Aluno> alunos, int nAvaliacoes) throws NumberFormatException, InputMismatchException, PessoaNaoEncontradaException {
         List<Avaliacao> avs = new ArrayList<>();
         int avaliacoesRegistradas = 0;
 
@@ -424,9 +424,9 @@ public class Entrada {
                 s.novoProf(p);
             }
         } catch (NumberFormatException error) {
-            System.out.println("Erro: O salário informado é inválido.");
+            System.out.println("Erro: O salário informado é inválido. Tente novamente.");
         } catch (InputMismatchException error) {
-            System.out.println("Erro: Uma das informações do Professor foi inserida de maneira incorreta.");
+            System.out.println("Erro: Uma das informações do Professor foi inserida de maneira incorreta. Tente novamente.");
         }
     }
 
@@ -444,7 +444,7 @@ public class Entrada {
 
         try {
             s.encontrarAluno(mat);
-            System.out.println("Erro: Matrícula duplicado. academico.Aluno não adicionado.");
+            System.out.println("Erro: Matrícula duplicada. academico.Aluno não adicionado.");
         } catch (PessoaNaoEncontradaException error) {
             Aluno a = new Aluno(nome, cpf, mat);
             s.novoAluno(a);
@@ -468,13 +468,13 @@ public class Entrada {
 
             try {
                 s.encontrarAluno(mat);
-                System.out.println("Erro: Matrícula duplicado. academico.Aluno não adicionado.");
+                System.out.println("Erro: Matrícula duplicada. academico.Aluno não adicionado.");
             } catch (PessoaNaoEncontradaException error) {
                 Aluno a = new Aluno(nome, cpf, mat);
                 s.novoAluno(a);
             }
         } catch (InputMismatchException error) {
-            System.out.println("Erro: Uma das informações do Aluno foi inserida de maneira incorreta.");
+            System.out.println("Erro: Uma das informações do Aluno foi inserida de maneira incorreta. Tente novamente.");
         }
     }
 
@@ -693,7 +693,7 @@ public class Entrada {
         } catch (PessoaNaoEncontradaException | AlunoGrupoTrabalhoException error) {
             System.out.println(error.getMessage());
         } catch (NumberFormatException error) {
-            System.out.println("Erro: Tivemos problema ao converter uma das informações para o valor numérico.");
+            System.out.println("Erro: Tivemos um problema ao converter uma das informações para o valor numérico.");
         } catch (InputMismatchException error) {
             System.out.println("Erro: Uma das informações da Turma foi inserida de maneira incorreta.");
         }
@@ -733,9 +733,9 @@ public class Entrada {
         } catch (PessoaNaoEncontradaException error) {
             System.out.println(error.getMessage());
         } catch (NumberFormatException error) {
-            System.out.println("Erro: Tivemos problema ao converter uma das informações para o valor numérico.");
+            System.out.println("Erro: Tivemos um problema ao converter uma das informações para o valor numérico. Tente cadastrar a Turma novamente.");
         } catch (InputMismatchException error) {
-            System.out.println("Erro: Uma das informações do Professor foi inserida de maneira incorreta.");
+            System.out.println("Erro: Uma das informações da Turma foi inserida de maneira incorreta. Tente cadastrar a Turma novamente.");
         }
     }
 }
