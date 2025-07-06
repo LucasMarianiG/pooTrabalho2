@@ -1,6 +1,6 @@
 package academico;
 
-public class Avaliacao {
+public abstract class Avaliacao {
     protected String nome;
     protected Data dtAplic;
     protected double valor;
@@ -11,7 +11,5 @@ public class Avaliacao {
         this.valor = valor;
     }
 
-    public double nota(String cpf) {
-        return -1;
-    }
+    public abstract double nota(String cpf);
 }

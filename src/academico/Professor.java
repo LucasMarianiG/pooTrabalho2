@@ -7,4 +7,9 @@ public class Professor extends Pessoa{
         super(nome, cpf);
         this.salario = salario;
     }
+
+    @Override
+    public String toString() {
+        return nome + " (CPF: " + this.cpf + ")";
+    }
 }

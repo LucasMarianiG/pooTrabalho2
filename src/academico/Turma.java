@@ -54,7 +54,7 @@ public class Turma {
             somaTotal += somaAluno;
         }
 
-        System.out.println("Média da Turma: " + (somaTotal/(totalAluno == 0 ? 1 : totalAluno)));
+        System.out.println("Média da Turma: " + (somaTotal/(totalAluno == 0 ? 1 : totalAluno)) + "\n");
     }
 }
 

@@ -1,6 +1,6 @@
 package academico;
 
-public class Pessoa {
+public abstract class Pessoa {
     protected String nome;
     protected String cpf;
 
@@ -9,10 +9,7 @@ public class Pessoa {
         this.cpf = cpf;
     }
 
-    @Override
-    public String toString() {
-        return nome + " (CPF: " + this.cpf + ")";
-    }
+    public abstract String toString();
 
     public String getNome() {
         return nome;
