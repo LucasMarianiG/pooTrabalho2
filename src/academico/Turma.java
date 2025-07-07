@@ -1,9 +1,10 @@
 package academico;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class Turma {
+public class Turma implements Comparable<Turma> {
     private String nome;
     private int ano, sem;
     private Professor prof;
@@ -24,6 +25,22 @@ public class Turma {
         return this.nome + " ("+ this.ano + "/" + this.sem + ")";
     }
 
+    public String getNome() {
+        return nome;
+    }
+
+    public int getAno() {
+        return ano;
+    }
+
+    public int getSem() {
+        return sem;
+    }
+
+    public Professor getProf() {
+        return prof;
+    }
+
     public void setAlunos(List<Aluno> alunos) {
         this.alunos.addAll(alunos);
     }
@@ -33,28 +50,68 @@ public class Turma {
     }
 
     public void medias(){
-        int totalAluno = this.alunos.size();
         double somaTotal = 0;
+        int qtdAvaliacoes = this.avs.size();
+
+        // Incluindo variáveis auxiliares para realizar a ordenação
+        ComparaAlunoNota comparaAluno = new ComparaAlunoNota();
+
+        // Capturando as notas dos alunos para facilitar a ordenação
+        for (Aluno aluno : alunos) {
+            double[] notas = new double[qtdAvaliacoes];
+            // Pegando as notas do aluno em cada avaliação e armazenando no array
+            for (int i = 0; i < qtdAvaliacoes; i++) {
+                notas[i] = this.avs.get(i).nota(aluno.getCpf());
+            }
+
+            // Crio uma instância de AlunoProva, ela possui a estrutura ideal que podemos aproveitar para usar na ordenação
+            AlunoProva alunoNotas = new AlunoProva(aluno, this.avs.size());
+            // Adiciono as notas do aluno no array da instância de AlunoProva criada
+            alunoNotas.setNotas(notas);
+            // Adiciono a instância AlunoProva na lista para ordenação
+            comparaAluno.addAlunoProva(alunoNotas);
+        }
+
+        // Ordenando os alunos pela nota mais alta
+        Collections.sort(comparaAluno.getAlunosNotas(), comparaAluno);
 
         System.out.println("Médias da Turma: " + this + ":");
 
-        for( Aluno a: this.alunos){
-            double somaAluno = 0;
-            System.out.print(a + ": " );
+        // Imprimindo na tela os alunos com suas notas já ordenadas
+        for(AlunoProva ap: comparaAluno.getAlunosNotas()) {
+            // Imprimindo os dados do aluno
+            System.out.print(ap.getAluno() + ": " );
 
-            for (Avaliacao av : this.avs){
-                double nota = av.nota(a.getCpf());
-                somaAluno += nota;
-                System.out.print(nota + " ");
-            }
+            // Imprimindo as notas de cada avaliação do aluno
+            for (double nota : ap.getNotas()) System.out.print(nota + " ");
+
+            // Capturando a nota total do aluno
+            double notaTotal = ap.notaTotal();
 
             // Verificando se a nota do aluno foi maior que 100, se for, ele limita em MAX:100//
-            somaAluno = somaAluno > 100 ? 100: somaAluno;
-            System.out.println("= " + somaAluno);
-            somaTotal += somaAluno;
+            double notaFinal = notaTotal > 100 ? 100: notaTotal;
+
+            // Imprimindo a nota final do aluno
+            System.out.println("= " + notaFinal);
+            somaTotal += notaFinal;
         }
 
-        System.out.println("Média da Turma: " + (somaTotal/(totalAluno == 0 ? 1 : totalAluno)) + "\n");
+        System.out.println("Média da Turma: " + (comparaAluno.getAlunosNotas().isEmpty() ? 0.0 : somaTotal/comparaAluno.getAlunosNotas().size()) + "\n");
+    }
+
+    public int compareTo(Turma t2) {
+        // Comparando os extremos dos anos das turmas
+        if (this.ano < t2.getAno()) return 1;
+        if (this.ano > t2.getAno()) return -1;
+
+        // Comparando os extremos dos semestres das turmas
+        if (this.sem < t2.getSem()) return 1;
+        if (this.sem > t2.getSem()) return -1;
+
+        int compTurmaNome = this.nome.compareTo(t2.getNome());
+        if (compTurmaNome != 0) return compTurmaNome;
+
+        return this.prof.getNome().compareTo(t2.getProf().getNome());
     }
 }
 

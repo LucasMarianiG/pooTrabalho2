@@ -9,6 +9,14 @@ public class AlunoProva {
         this.notas = new double[nQuestoes];
     }
 
+    public Aluno getAluno() {
+        return aluno;
+    }
+
+    public double[] getNotas() {
+        return notas;
+    }
+
     public void setNotas(double[] notas) {
         this.notas = notas;
     }
@@ -21,9 +29,5 @@ public class AlunoProva {
         }
 
         return total;
-    }
-
-    public Aluno getAluno() {
-        return aluno;
     }
 }

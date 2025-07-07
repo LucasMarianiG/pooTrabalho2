@@ -1,6 +1,7 @@
 package academico;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Sistema {
@@ -90,6 +91,10 @@ public class Sistema {
         } else {
             System.out.println("Turmas cadastradas:");
 
+            // Ordenando as turmas
+            Collections.sort(this.turmas);
+
+            // Listando as turmas e suas médias de notas
             for (Turma t : this.turmas) {
                 t.medias();
             }
