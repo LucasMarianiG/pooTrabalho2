@@ -1,5 +1,8 @@
 package academico;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+
 public class Aluno extends Pessoa {
     private String mat;
 
@@ -15,5 +18,12 @@ public class Aluno extends Pessoa {
 
     public String getMat() {
         return this.mat;
+    }
+
+    @Override
+    public void salvarDadosArq(BufferedWriter buff) throws IOException {
+        buff.write("ALU\n");
+        super.salvarDadosArq(buff);
+        buff.write(this.mat + "\n");
     }
 }

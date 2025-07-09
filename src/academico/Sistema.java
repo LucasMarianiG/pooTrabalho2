@@ -17,6 +17,24 @@ public class Sistema {
 
     /***************************************************/
 
+    public List<Professor> getProfs() {
+        return this.profs;
+    }
+
+    /***************************************************/
+
+    public List<Aluno> getAlunos() {
+        return this.alunos;
+    }
+
+    /***************************************************/
+
+    public List<Turma> getTurmas() {
+        return this.turmas;
+    }
+
+    /***************************************************/
+
     public void novoProf(Professor p) {
         this.profs.add(p);
     }

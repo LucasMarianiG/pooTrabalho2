@@ -1,5 +1,7 @@
 package academico;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,19 +28,19 @@ public class Turma implements Comparable<Turma> {
     }
 
     public String getNome() {
-        return nome;
+        return this.nome;
     }
 
     public int getAno() {
-        return ano;
+        return this.ano;
     }
 
     public int getSem() {
-        return sem;
+        return this.sem;
     }
 
     public Professor getProf() {
-        return prof;
+        return this.prof;
     }
 
     public void setAlunos(List<Aluno> alunos) {
@@ -49,7 +51,7 @@ public class Turma implements Comparable<Turma> {
         this.avs.addAll(avs);
     }
 
-    public void medias(){
+    public void medias() {
         double somaTotal = 0;
         int qtdAvaliacoes = this.avs.size();
 
@@ -57,7 +59,7 @@ public class Turma implements Comparable<Turma> {
         ComparaAlunoNota comparaAluno = new ComparaAlunoNota();
 
         // Capturando as notas dos alunos para facilitar a ordenação
-        for (Aluno aluno : alunos) {
+        for (Aluno aluno : this.alunos) {
             double[] notas = new double[qtdAvaliacoes];
             // Pegando as notas do aluno em cada avaliação e armazenando no array
             for (int i = 0; i < qtdAvaliacoes; i++) {
@@ -65,11 +67,11 @@ public class Turma implements Comparable<Turma> {
             }
 
             // Crio uma instância de AlunoProva, ela possui a estrutura ideal que podemos aproveitar para usar na ordenação
-            AlunoProva alunoNotas = new AlunoProva(aluno, this.avs.size());
+            AlunoProva alunoNota = new AlunoProva(aluno, qtdAvaliacoes);
             // Adiciono as notas do aluno no array da instância de AlunoProva criada
-            alunoNotas.setNotas(notas);
+            alunoNota.setNotas(notas);
             // Adiciono a instância AlunoProva na lista para ordenação
-            comparaAluno.addAlunoProva(alunoNotas);
+            comparaAluno.addAlunoProva(alunoNota);
         }
 
         // Ordenando os alunos pela nota mais alta
@@ -112,6 +114,24 @@ public class Turma implements Comparable<Turma> {
         if (compTurmaNome != 0) return compTurmaNome;
 
         return this.prof.getNome().compareTo(t2.getProf().getNome());
+    }
+
+    public void salvarDadosArq(BufferedWriter buff) throws IOException {
+        buff.write("TUR\n");
+
+        // Dados da turma
+        buff.write(this.nome + "\n");
+        buff.write(this.ano + "\n");
+        buff.write(this.sem + "\n");
+        buff.write(this.prof.getCpf() + "\n");
+
+        // Dados dos alunos
+        buff.write(this.alunos.size() + "\n");
+        for (Aluno a: this.alunos) buff.write(a.getMat() + "\n");
+
+        // Dados das avaliações
+        buff.write(this.avs.size() + "\n");
+        for (Avaliacao av: this.avs) av.salvarDadosArq(buff, this.alunos);
     }
 }
 

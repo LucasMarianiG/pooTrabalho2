@@ -75,6 +75,36 @@ public class Entrada {
 
     /***************************************************/
 
+    private void salvarDadosArq(Sistema s) throws IOException {
+        FileWriter fw;
+        BufferedWriter buff = null;
+
+        try {
+            fw = new FileWriter("dados.txt");
+            buff = new BufferedWriter(fw);
+
+            // Salvando os dados dos professores
+            for (Professor p: s.getProfs()) p.salvarDadosArq(buff);
+
+            // Salvando os dados dos alunos
+            for (Aluno a: s.getAlunos()) a.salvarDadosArq(buff);
+
+            // Salvando os dados das turmas
+            for (Turma t: s.getTurmas()) t.salvarDadosArq(buff);
+        } catch (FileNotFoundException error) {
+            System.out.println("Erro: Problema ao abrir o arquivo para salvar os novos dados");
+        } catch (IOException error) {
+            System.out.println("Erro: Problema ao salvar os dados no arquivo");
+        } finally {
+            if (buff != null) {
+                buff.write("FIM\n");
+                buff.close();
+            }
+        }
+    }
+
+    /***************************************************/
+
     /**
      * Faz a leitura de uma linha inteira de um arquivo
      * @param buff: Um objeto da classe BufferedReader
@@ -422,7 +452,12 @@ public class Entrada {
             } catch (PessoaNaoEncontradaException error) {
                 Professor p = new Professor(nome, cpf, salario);
                 s.novoProf(p);
+
+                // Salvando os dados após cada cadastro de professor
+                this.salvarDadosArq(s);
             }
+        } catch (IOException error) {
+            System.out.println("Erro: Dados não salvos no arquivo.");
         } catch (NumberFormatException error) {
             System.out.println("Erro: O salário informado é inválido. Tente novamente.");
         } catch (InputMismatchException error) {
@@ -472,7 +507,12 @@ public class Entrada {
             } catch (PessoaNaoEncontradaException error) {
                 Aluno a = new Aluno(nome, cpf, mat);
                 s.novoAluno(a);
+
+                // Salvando os dados após cada cadastro de aluno
+                this.salvarDadosArq(s);
             }
+        } catch (IOException error) {
+            System.out.println("Erro: Dados não salvos no arquivo.");
         } catch (InputMismatchException error) {
             System.out.println("Erro: Uma das informações do Aluno foi inserida de maneira incorreta. Tente novamente.");
         }
@@ -730,8 +770,13 @@ public class Entrada {
 
             // Registrando a nova turma no sistema
             s.novaTurma(t);
+
+            // Salvando os dados após cada cadastro do professor
+            this.salvarDadosArq(s);
         } catch (PessoaNaoEncontradaException error) {
             System.out.println(error.getMessage());
+        } catch (IOException error) {
+            System.out.println("Erro: Dados não salvos no arquivo.");
         } catch (NumberFormatException error) {
             System.out.println("Erro: Tivemos um problema ao converter uma das informações para o valor numérico. Tente cadastrar a Turma novamente.");
         } catch (InputMismatchException error) {

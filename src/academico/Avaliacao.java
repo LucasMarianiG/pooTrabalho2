@@ -1,5 +1,9 @@
 package academico;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.util.List;
+
 public abstract class Avaliacao {
     protected String nome;
     protected Data dtAplic;
@@ -12,4 +16,12 @@ public abstract class Avaliacao {
     }
 
     public abstract double nota(String cpf);
+
+    public void salvarDadosArq(BufferedWriter buff, List<Aluno> alunos) throws IOException {
+        buff.write(this.nome + "\n");
+        buff.write(this.dtAplic.getDia() + "\n");
+        buff.write(this.dtAplic.getMes() + "\n");
+        buff.write(this.dtAplic.getAno() + "\n");
+        buff.write(this.valor + "\n");
+    }
 }

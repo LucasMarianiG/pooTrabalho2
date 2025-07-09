@@ -11,9 +11,6 @@ public class Main {
 
         int op = io.menu();
 
-        // TODO incluir a chamada da função de salvar os dados a cada novo cadastro.
-        // TODO Inserir em todas as operações
-
         while (op != 0) {
             if (op == 1) {
                 io.cadProf(s);

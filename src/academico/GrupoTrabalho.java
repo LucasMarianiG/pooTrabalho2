@@ -1,5 +1,7 @@
 package academico;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,5 +34,13 @@ public class GrupoTrabalho {
         }
 
         return false;
+    }
+
+    public void salvarDadosArq(BufferedWriter buff) throws IOException {
+        buff.write(this.alunos.size() + "\n");
+
+        for (Aluno a : this.alunos) buff.write(a.getMat() + "\n");
+
+        buff.write(nota + "\n");
     }
 }

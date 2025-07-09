@@ -1,5 +1,8 @@
 package academico;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+
 public abstract class Pessoa {
     protected String nome;
     protected String cpf;
@@ -17,5 +20,10 @@ public abstract class Pessoa {
 
     public String getCpf() {
         return cpf;
+    }
+
+    public void salvarDadosArq(BufferedWriter buff) throws IOException {
+        buff.write(this.nome + "\n");
+        buff.write(this.cpf + "\n");
     }
 }
