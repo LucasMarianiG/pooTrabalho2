@@ -35,21 +35,13 @@ public class Prova extends Avaliacao {
         this.notas.addAll(notas);
     }
 
-    public void salvarDadosArq(BufferedWriter buff, List<Aluno> alunos) throws IOException {
+    public void salvarDadosArq(BufferedWriter buff) throws IOException {
         buff.write("PROV\n");
-        super.salvarDadosArq(buff, alunos);
+        super.salvarDadosArq(buff);
         buff.write(this.nQuestoes + "\n");
 
-        for (Aluno a: alunos) {
-            try {
-                // Pegando as notas por Aluno
-                // Pode ser que em algum momento a lista de alunos tenha sido ordenada anteriormente
-                // Então salvamos as notas das provas de acordo com a ordem dos alunos
-                for (double nota: this.getAlunoProva(a.getCpf()).getNotas()) buff.write(nota + "\n");
-            } catch (PessoaNaoEncontradaException error) {
-                // Cremos que os dados do Aluno na prova serão encontrados, mas caso não sejam serão salvos com a nota zerada
-                for (int i = 0; i < this.nQuestoes; i++) buff.write("0.0\n");
-            }
+        for (AlunoProva ap: this.notas) {
+            for (double nota: ap.getNotas()) buff.write(nota + "\n");
         }
     }
 }

@@ -131,7 +131,7 @@ public class Turma implements Comparable<Turma> {
 
         // Dados das avaliações
         buff.write(this.avs.size() + "\n");
-        for (Avaliacao av: this.avs) av.salvarDadosArq(buff, this.alunos);
+        for (Avaliacao av: this.avs) av.salvarDadosArq(buff);
     }
 }
 

@@ -29,9 +29,9 @@ public class Trabalho extends Avaliacao {
         return 0;
     }
 
-    public void salvarDadosArq(BufferedWriter buff, List<Aluno> alunos) throws IOException {
+    public void salvarDadosArq(BufferedWriter buff) throws IOException {
         buff.write("TRAB\n");
-        super.salvarDadosArq(buff, alunos);
+        super.salvarDadosArq(buff);
         buff.write(this.nIntegrantes + "\n");
         buff.write(this.grupos.size() + "\n");
 

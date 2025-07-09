@@ -17,7 +17,7 @@ public abstract class Avaliacao {
 
     public abstract double nota(String cpf);
 
-    public void salvarDadosArq(BufferedWriter buff, List<Aluno> alunos) throws IOException {
+    public void salvarDadosArq(BufferedWriter buff) throws IOException {
         buff.write(this.nome + "\n");
         buff.write(this.dtAplic.getDia() + "\n");
         buff.write(this.dtAplic.getMes() + "\n");
